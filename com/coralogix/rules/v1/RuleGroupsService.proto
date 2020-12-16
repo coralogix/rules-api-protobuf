@@ -1,0 +1,79 @@
+syntax = "proto3";
+
+package com.coralogix.rules.v1;
+option (scalapb.options) = {
+  package_name: "com.coralogix.rules.grpc.external.v1"
+};
+
+import "scalapb/scalapb.proto";
+import "google/protobuf/wrappers.proto";
+import "com/coralogix/rules/v1/Rule.proto";
+import "com/coralogix/rules/v1/RuleGroup.proto";
+import "com/coralogix/rules/v1/RuleMatcher.proto";
+
+service RuleGroupsService {
+  rpc GetRuleGroup(GetRuleGroupRequest) returns (GetRuleGroupResponse) {}
+  rpc CreateRuleGroup(CreateRuleGroupRequest) returns (CreateRuleGroupResponse) {}
+  rpc UpdateRuleGroup(UpdateRuleGroupRequest) returns (UpdateRuleGroupResponse) {}
+  rpc DeleteRuleGroup(DeleteRuleGroupRequest) returns (DeleteRuleGroupResponse) {}
+}
+
+message GetRuleGroupRequest {
+  string groupId = 1;
+}
+
+message GetRuleGroupResponse {
+  RuleGroup ruleGroup = 1;
+}
+
+message CreateRuleGroupRequest {
+  google.protobuf.StringValue name = 1;
+  google.protobuf.StringValue description = 2;
+  google.protobuf.BoolValue enabled = 3;
+  google.protobuf.BoolValue hidden = 4;
+  google.protobuf.StringValue creator = 5;
+  
+  repeated RuleMatcher ruleMatchers = 6;
+
+  message CreateRuleSubgroup {
+    message CreateRule {
+      google.protobuf.StringValue name = 1;
+      google.protobuf.StringValue rule = 2;
+      google.protobuf.StringValue description = 3;
+      google.protobuf.StringValue sourceField = 4;
+
+      RuleParameters parameters = 5;
+
+      google.protobuf.BoolValue enabled = 6;
+
+      google.protobuf.UInt32Value order = 7;
+    }
+
+    repeated CreateRule rules = 1;
+
+    google.protobuf.BoolValue enabled = 2;
+    google.protobuf.UInt32Value order = 3;
+  }
+
+  repeated CreateRuleSubgroup ruleSubgroups = 7;
+}
+
+message CreateRuleGroupResponse {
+  RuleGroup ruleGroup = 1;
+}
+
+message UpdateRuleGroupRequest {
+  google.protobuf.StringValue groupId = 1;
+
+  CreateRuleGroupRequest ruleGroup = 2;
+}
+
+message UpdateRuleGroupResponse {
+  RuleGroup ruleGroup = 1;
+}
+
+message DeleteRuleGroupRequest {
+  string groupId = 1;
+}
+
+message DeleteRuleGroupResponse {}

@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package com.coralogix.rules.v1;
+option (scalapb.options) = {
+  package_name: "com.coralogix.rules.grpc.external.v1"
+  flat_package: true
+};
+
+import "google/protobuf/wrappers.proto";
+import "scalapb/scalapb.proto";
+
+message RuleMatcher {
+  oneof constraint {
+    ApplicationNameConstraint applicationName = 1;
+    SubsystemNameConstraint subsystemName = 2;
+    SeverityConstraint severity = 9;
+  }
+}
+
+message ApplicationNameConstraint {
+  google.protobuf.StringValue value = 1;
+}
+
+message SubsystemNameConstraint {
+  google.protobuf.StringValue value = 1;
+}
+
+message SeverityConstraint {
+  enum Value {
+    DEBUG = 0;
+    VERBOSE = 1;
+    INFO = 2;
+    WARNING = 3;
+    ERROR = 4;
+    CRITICAL = 5;
+  }
+
+  Value value = 1;
+}

@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+package com.coralogix.rules.v1;
+option (scalapb.options) = {
+  package_name: "com.coralogix.rules.grpc.external.v1"
+  flat_package: true
+};
+
+import "google/protobuf/wrappers.proto";
+import "scalapb/scalapb.proto";
+
+message Rule {
+  google.protobuf.StringValue id = 1;
+  google.protobuf.StringValue name = 2;
+  google.protobuf.StringValue description = 3;
+
+  google.protobuf.StringValue rule = 4;
+
+  google.protobuf.StringValue sourceField = 5;
+
+  RuleParameters parameters = 6;
+
+  google.protobuf.BoolValue enabled = 7;
+  google.protobuf.UInt32Value order = 8;
+}
+
+message RuleParameters {
+  oneof ruleParameters {
+    ExtractParameters extractParameters = 1;
+    JsonExtractParameters jsonExtractParameters = 2;
+    ReplaceParameters replaceParameters = 3;
+    ParseParameters parseParameters = 4;
+    AllowParameters allowParameters = 5;
+    BlockParameters blockParameters = 6;
+  }
+}
+
+message ExtractParameters {
+  google.protobuf.StringValue destinationField = 1;
+}
+
+message JsonExtractParameters {
+  enum DestinationField {
+    CATEGORY = 0;
+    CLASSNAME = 1;
+    METHODNAME = 2;
+    THREADID = 3;
+    SEVERITY = 4;
+  }
+
+  DestinationField destinationField = 1;
+}
+
+message ReplaceParameters {
+  google.protobuf.StringValue destinationField = 1;
+  google.protobuf.StringValue replaceNewVal = 2;
+}
+
+message ParseParameters {
+  google.protobuf.StringValue destinationField = 1;
+}
+
+message AllowParameters {}
+message BlockParameters {
+  google.protobuf.BoolValue keepBlockedLogs = 1;
+}
+

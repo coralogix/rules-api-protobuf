@@ -36,7 +36,8 @@ message RuleParameters {
 }
 
 message ExtractParameters {
-  google.protobuf.StringValue destinationField = 1;
+  reserved 1;
+  reserved "destinationField";
 }
 
 message JsonExtractParameters {

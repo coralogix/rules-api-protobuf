@@ -14,7 +14,8 @@ message Rule {
   google.protobuf.StringValue name = 2;
   google.protobuf.StringValue description = 3;
 
-  google.protobuf.StringValue rule = 4;
+  reserved "rule";
+  reserved 4;
 
   google.protobuf.StringValue sourceField = 5;
 
@@ -38,6 +39,8 @@ message RuleParameters {
 message ExtractParameters {
   reserved 1;
   reserved "destinationField";
+
+  google.protobuf.StringValue rule = 2;
 }
 
 message JsonExtractParameters {
@@ -55,14 +58,21 @@ message JsonExtractParameters {
 message ReplaceParameters {
   google.protobuf.StringValue destinationField = 1;
   google.protobuf.StringValue replaceNewVal = 2;
+  google.protobuf.StringValue rule = 3;
 }
 
 message ParseParameters {
   google.protobuf.StringValue destinationField = 1;
+  google.protobuf.StringValue rule = 2;
 }
 
-message AllowParameters {}
+message AllowParameters {
+  google.protobuf.BoolValue keepBlockedLogs = 1;
+  google.protobuf.StringValue rule = 2;
+}
+
 message BlockParameters {
   google.protobuf.BoolValue keepBlockedLogs = 1;
+  google.protobuf.StringValue rule = 2;
 }
 

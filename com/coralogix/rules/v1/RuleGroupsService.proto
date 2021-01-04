@@ -38,7 +38,10 @@ message CreateRuleGroupRequest {
   message CreateRuleSubgroup {
     message CreateRule {
       google.protobuf.StringValue name = 1;
-      google.protobuf.StringValue rule = 2;
+
+      reserved "rule";
+      reserved 2;
+
       google.protobuf.StringValue description = 3;
       google.protobuf.StringValue sourceField = 4;
 

@@ -23,4 +23,6 @@ message RuleGroup {
 
   repeated RuleMatcher ruleMatchers = 9;
   repeated RuleSubgroup ruleSubgroups = 10;
+
+  google.protobuf.UInt32Value order = 11;
 }

@@ -59,6 +59,8 @@ message CreateRuleGroupRequest {
   }
 
   repeated CreateRuleSubgroup ruleSubgroups = 7;
+
+  google.protobuf.UInt32Value order = 8;
 }
 
 message CreateRuleGroupResponse {

@@ -10,12 +10,21 @@ import "google/protobuf/wrappers.proto";
 import "com/coralogix/rules/v1/Rule.proto";
 import "com/coralogix/rules/v1/RuleGroup.proto";
 import "com/coralogix/rules/v1/RuleMatcher.proto";
+import "google/protobuf/descriptor.proto";
+
+message AuditLogDescription {
+  optional string description = 1;
+}
+
+extend google.protobuf.MethodOptions {
+  optional AuditLogDescription audit_log_description = 5000;
+}
 
 service RuleGroupsService {
-  rpc GetRuleGroup(GetRuleGroupRequest) returns (GetRuleGroupResponse) {}
-  rpc CreateRuleGroup(CreateRuleGroupRequest) returns (CreateRuleGroupResponse) {}
-  rpc UpdateRuleGroup(UpdateRuleGroupRequest) returns (UpdateRuleGroupResponse) {}
-  rpc DeleteRuleGroup(DeleteRuleGroupRequest) returns (DeleteRuleGroupResponse) {}
+  rpc GetRuleGroup(GetRuleGroupRequest) returns (GetRuleGroupResponse) {option (audit_log_description).description = "get rule group";}
+  rpc CreateRuleGroup(CreateRuleGroupRequest) returns (CreateRuleGroupResponse) {option (audit_log_description).description = "create rule group";}
+  rpc UpdateRuleGroup(UpdateRuleGroupRequest) returns (UpdateRuleGroupResponse) {option (audit_log_description).description = "update rule group";}
+  rpc DeleteRuleGroup(DeleteRuleGroupRequest) returns (DeleteRuleGroupResponse) {option (audit_log_description).description = "delete rule group";}
 }
 
 message GetRuleGroupRequest {

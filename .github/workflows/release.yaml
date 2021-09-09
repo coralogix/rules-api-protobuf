@@ -16,3 +16,4 @@ jobs:
         with:
           operation: commit
           token: ${{ secrets.GITHUB_TOKEN }}
+          release: ${{ github.event.release.tag_name }}

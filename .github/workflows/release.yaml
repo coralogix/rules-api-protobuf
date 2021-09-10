@@ -11,20 +11,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Download protolock
-        run: |
-          FILENAME="protolock.20210218T172155Z.linux-amd64.tgz"
-
-          wget https://github.com/nilslice/protolock/releases/download/v0.15.2/${FILENAME}
-          tar xvzpf ${FILENAME}
-
-      - name: Create Protolock file
-        run: |
-          ./protolock init --strict
-
-      - name: Upload Protolock to latest release
-        run: |
-          TAG_NAME=${GITHUB_REF#refs/tags/}
-          gh release upload $TAG_NAME proto.lock
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      - name: Commit
+        uses: coralogix/eng-gh-action-protolock@master
+        with:
+          operation: commit
+          token: ${{ secrets.GITHUB_TOKEN }}
+          release: ${{ github.event.release.tag_name }}

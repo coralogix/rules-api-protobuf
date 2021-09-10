@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Commit
-        uses: coralogix/eng-gh-action-protolock@master
+        uses: coralogix/eng-gh-action-protolock@v0.1
         with:
           operation: commit
           token: ${{ secrets.GITHUB_TOKEN }}

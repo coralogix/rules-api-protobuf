@@ -3,9 +3,9 @@ syntax = "proto3";
 package com.coralogix.rules.v1;
 
 import "google/protobuf/wrappers.proto";
-import "com/coralogix/rules/v1/Rule.proto";
-import "com/coralogix/rules/v1/RuleGroup.proto";
-import "com/coralogix/rules/v1/RuleMatcher.proto";
+import "com/coralogix/rules/v1/rule.proto";
+import "com/coralogix/rules/v1/rule_group.proto";
+import "com/coralogix/rules/v1/rule_matcher.proto";
 import "google/protobuf/descriptor.proto";
 
 message AuditLogDescription {
@@ -13,7 +13,7 @@ message AuditLogDescription {
 }
 
 extend google.protobuf.MethodOptions {
-  optional AuditLogDescription audit_log_description = 5000;
+  AuditLogDescription audit_log_description = 5000;
 }
 
 service RuleGroupsService {
@@ -24,11 +24,11 @@ service RuleGroupsService {
 }
 
 message GetRuleGroupRequest {
-  string groupId = 1;
+  string group_id = 1;
 }
 
 message GetRuleGroupResponse {
-  RuleGroup ruleGroup = 1;
+  RuleGroup rule_group = 1;
 }
 
 message CreateRuleGroupRequest {
@@ -38,7 +38,7 @@ message CreateRuleGroupRequest {
   google.protobuf.BoolValue hidden = 4;
   google.protobuf.StringValue creator = 5;
   
-  repeated RuleMatcher ruleMatchers = 6;
+  repeated RuleMatcher rule_matchers = 6;
 
   message CreateRuleSubgroup {
     message CreateRule {
@@ -48,7 +48,7 @@ message CreateRuleGroupRequest {
       reserved 2;
 
       google.protobuf.StringValue description = 3;
-      google.protobuf.StringValue sourceField = 4;
+      google.protobuf.StringValue source_field = 4;
 
       RuleParameters parameters = 5;
 
@@ -63,27 +63,27 @@ message CreateRuleGroupRequest {
     google.protobuf.UInt32Value order = 3;
   }
 
-  repeated CreateRuleSubgroup ruleSubgroups = 7;
+  repeated CreateRuleSubgroup rule_subgroups = 7;
 
   google.protobuf.UInt32Value order = 8;
 }
 
 message CreateRuleGroupResponse {
-  RuleGroup ruleGroup = 1;
+  RuleGroup rule_group = 1;
 }
 
 message UpdateRuleGroupRequest {
-  google.protobuf.StringValue groupId = 1;
+  google.protobuf.StringValue group_id = 1;
 
-  CreateRuleGroupRequest ruleGroup = 2;
+  CreateRuleGroupRequest rule_group = 2;
 }
 
 message UpdateRuleGroupResponse {
-  RuleGroup ruleGroup = 1;
+  RuleGroup rule_group = 1;
 }
 
 message DeleteRuleGroupRequest {
-  string groupId = 1;
+  string group_id = 1;
 }
 
 message DeleteRuleGroupResponse {}

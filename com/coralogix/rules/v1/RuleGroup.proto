@@ -1,12 +1,7 @@
 syntax = "proto3";
 
 package com.coralogix.rules.v1;
-option (scalapb.options) = {
-  package_name: "com.coralogix.rules.grpc.external.v1"
-  flat_package: true
-};
 
-import "scalapb/scalapb.proto";
 import "google/protobuf/wrappers.proto";
 import "com/coralogix/rules/v1/RuleMatcher.proto";
 import "com/coralogix/rules/v1/RuleSubgroup.proto";

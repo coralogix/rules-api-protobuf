@@ -1,13 +1,8 @@
 syntax = "proto3";
 
 package com.coralogix.rules.v1;
-option (scalapb.options) = {
-  package_name: "com.coralogix.rules.grpc.external.v1"
-  flat_package: true
-};
 
 import "google/protobuf/wrappers.proto";
-import "scalapb/scalapb.proto";
 
 message RuleMatcher {
   oneof constraint {

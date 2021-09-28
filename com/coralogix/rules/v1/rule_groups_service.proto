@@ -7,6 +7,7 @@ import "com/coralogix/rules/v1/rule.proto";
 import "com/coralogix/rules/v1/rule_group.proto";
 import "com/coralogix/rules/v1/rule_matcher.proto";
 import "google/protobuf/descriptor.proto";
+import "google/api/annotations.proto";
 
 message AuditLogDescription {
   optional string description = 1;
@@ -17,10 +18,32 @@ extend google.protobuf.MethodOptions {
 }
 
 service RuleGroupsService {
-  rpc GetRuleGroup(GetRuleGroupRequest) returns (GetRuleGroupResponse) {option (audit_log_description).description = "get rule group";}
-  rpc CreateRuleGroup(CreateRuleGroupRequest) returns (CreateRuleGroupResponse) {option (audit_log_description).description = "create rule group";}
-  rpc UpdateRuleGroup(UpdateRuleGroupRequest) returns (UpdateRuleGroupResponse) {option (audit_log_description).description = "update rule group";}
-  rpc DeleteRuleGroup(DeleteRuleGroupRequest) returns (DeleteRuleGroupResponse) {option (audit_log_description).description = "delete rule group";}
+  rpc GetRuleGroup(GetRuleGroupRequest) returns (GetRuleGroupResponse) {
+    option (audit_log_description).description = "get rule group";
+    option (google.api.http) = {
+      get: "/api/v1/rulegroups/{group_id}"
+    };
+  }
+  rpc CreateRuleGroup(CreateRuleGroupRequest) returns (CreateRuleGroupResponse) {
+    option (audit_log_description).description = "create rule group";
+    option (google.api.http) = {
+      post: "/api/v1/rulegroups/"
+      body: "*"
+    };
+  }
+  rpc UpdateRuleGroup(UpdateRuleGroupRequest) returns (UpdateRuleGroupResponse) {
+    option (audit_log_description).description = "update rule group";
+    option (google.api.http) = {
+      put: "/api/v1/rulegroups/{group_id}"
+      body: "rule_group"
+    };
+  }
+  rpc DeleteRuleGroup(DeleteRuleGroupRequest) returns (DeleteRuleGroupResponse) {
+    option (audit_log_description).description = "delete rule group";
+    option (google.api.http) = {
+      delete: "/api/v1/rulegroups/{group_id}"
+    };
+  }
 }
 
 message GetRuleGroupRequest {
@@ -37,7 +60,7 @@ message CreateRuleGroupRequest {
   google.protobuf.BoolValue enabled = 3;
   google.protobuf.BoolValue hidden = 4;
   google.protobuf.StringValue creator = 5;
-  
+
   repeated RuleMatcher rule_matchers = 6;
 
   message CreateRuleSubgroup {

@@ -50,6 +50,7 @@ message JsonExtractParameters {
   }
 
   DestinationField destination_field = 1;
+  google.protobuf.StringValue rule = 2;
 }
 
 message ReplaceParameters {

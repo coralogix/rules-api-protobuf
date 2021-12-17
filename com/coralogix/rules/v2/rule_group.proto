@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package com.coralogix.rules.v2;
+
+import "google/protobuf/wrappers.proto";
+import "com/coralogix/rules/v2/rule_matcher.proto";
+import "com/coralogix/rules/v2/rule_subgroup.proto";
+
+message RuleGroup {
+  message Data{
+    google.protobuf.StringValue id = 1;
+    google.protobuf.StringValue name = 2;
+    google.protobuf.StringValue description = 3;
+    google.protobuf.StringValue creator = 6;
+    google.protobuf.BoolValue enabled = 7;
+    google.protobuf.BoolValue hidden = 8;
+    repeated RuleMatcher rule_matchers = 9;
+    repeated RuleSubgroup rule_subgroups = 10;
+    google.protobuf.UInt32Value order = 11;
+  }
+  message ServerGenerated{
+    google.protobuf.StringValue id = 1;
+    google.protobuf.StringValue name = 2;
+  }
+
+  Data data = 1;
+  ServerGenerated server_generated = 2;
+}

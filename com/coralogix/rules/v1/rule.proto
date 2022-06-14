@@ -30,6 +30,8 @@ message RuleParameters {
     BlockParameters block_parameters = 6;
     ExtractTimestampParameters extract_timestamp_parameters = 7;
     RemoveFieldsParameters remove_fields_parameters = 8;
+    JsonStringifyParameters json_stringify_parameters = 9;
+    JsonParseParameters json_parse_parameters = 10;
   }
 }
 
@@ -91,4 +93,16 @@ message ExtractTimestampParameters {
 
 message RemoveFieldsParameters {
   repeated string fields = 1;
+}
+
+message JsonStringifyParameters {
+  google.protobuf.StringValue destination_field = 1;
+  google.protobuf.BoolValue delete_source = 2;
+}
+
+message JsonParseParameters {
+  google.protobuf.StringValue destination_field = 1;
+  google.protobuf.BoolValue delete_source = 2;
+  google.protobuf.BoolValue escaped_value = 3;
+  google.protobuf.BoolValue override_dest = 4;
 }

@@ -27,7 +27,7 @@ extend google.protobuf.FieldOptions {
 }
 
 message RuleGroup {
-  message Data{
+  message UserDefined{
     option (cx_gen_annotation) = CX_GEN_ANNOTATION_DATA;
     google.protobuf.StringValue id = 1 [ (cx_gen_annotation_f) = CX_GEN_ANNOTATION_FIELD_ID];
     google.protobuf.StringValue name = 2;
@@ -45,6 +45,6 @@ message RuleGroup {
     google.protobuf.StringValue name = 2;
   }
 
-  Data data = 1;
+  UserDefined user_defined = 1;
   ServerGenerated server_generated = 2;
 }

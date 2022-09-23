@@ -1,0 +1,9 @@
+proto_out_dir = "./grpc-deps/target/protobuf_external_src"
+name = 'cx-api-rules'
+description = 'Generated from protodep file'
+
+
+[cx-api-annotations]
+protocol = 'ssh'
+revision = '4d537943ddda113fdae21bd4b3b3eee6c4e8aeec'
+url = 'github.com/coralogix/cx-api-annotations'

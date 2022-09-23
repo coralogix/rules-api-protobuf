@@ -5,31 +5,22 @@ package com.coralogix.rules.v2;
 import "google/protobuf/wrappers.proto";
 import "com/coralogix/rules/v2/rule_matcher.proto";
 import "com/coralogix/rules/v2/rule_subgroup.proto";
+import "com/coralogix/v1/annotations.proto";
 import "google/protobuf/descriptor.proto";
 
-enum CxGenAnnotation {
-  CX_GEN_ANNOTATION_UNSPECIFIED = 0;
-  CX_GEN_ANNOTATION_DATA = 1;
-  CX_GEN_ANNOTATION_SERVER_GENERATED = 2;
-}
 
-enum CxGenFieldAnnotation {
-  CX_GEN_ANNOTATION_FIELD_UNSPECIFIED = 0;
-  CX_GEN_ANNOTATION_FIELD_ID = 1;
-}
-
-extend google.protobuf.MessageOptions {
-  CxGenAnnotation cx_gen_annotation = 5001;
+message CompoundId {
+  google.protobuf.UInt32Value ordering = 1;
 }
 
 extend google.protobuf.FieldOptions {
-  CxGenFieldAnnotation cx_gen_annotation_f = 5002;
+  CompoundId compound_id = 5003;
 }
 
 message RuleGroup {
+  option (com.coralogix.v1.cx_gen_message) = {resource: true};
   message UserDefined{
-    option (cx_gen_annotation) = CX_GEN_ANNOTATION_DATA;
-    google.protobuf.StringValue id = 1 [ (cx_gen_annotation_f) = CX_GEN_ANNOTATION_FIELD_ID];
+    google.protobuf.StringValue id = 1 ;
     google.protobuf.StringValue name = 2;
     google.protobuf.StringValue description = 3;
     google.protobuf.StringValue creator = 6;
@@ -40,8 +31,7 @@ message RuleGroup {
     google.protobuf.UInt32Value order = 11;
   }
   message ServerGenerated{
-    option (cx_gen_annotation) = CX_GEN_ANNOTATION_SERVER_GENERATED;
-    google.protobuf.StringValue id = 1 [(cx_gen_annotation_f) = CX_GEN_ANNOTATION_FIELD_ID];
+    google.protobuf.StringValue id = 1;
     google.protobuf.StringValue name = 2;
   }
 

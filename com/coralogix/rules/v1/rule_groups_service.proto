@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package com.coralogix.rules.v1;
 
+import "google/protobuf/struct.proto";
 import "google/protobuf/wrappers.proto";
 import "com/coralogix/rules/v1/rule.proto";
 import "com/coralogix/rules/v1/rule_group.proto";
@@ -42,6 +43,14 @@ service RuleGroupsService {
     option (audit_log_description).description = "delete rule group";
     option (google.api.http) = {
       delete: "/api/v1/rulegroups/{group_id}"
+    };
+  }
+
+  rpc GetRuleGroupModelMapping(GetRuleGroupModelMappingRequest) returns (GetRuleGroupModelMappingResponse){
+    option (audit_log_description).description = "get rule mapping";
+    option (google.api.http) = {
+      post: "/api/v1/rulegroup-mapping/"
+      body: "*"
     };
   }
 }
@@ -110,3 +119,44 @@ message DeleteRuleGroupRequest {
 }
 
 message DeleteRuleGroupResponse {}
+
+message GetRuleGroupModelMappingRequest {
+  google.protobuf.StringValue name = 1;
+  google.protobuf.StringValue description = 2;
+  google.protobuf.BoolValue enabled = 3;
+  google.protobuf.BoolValue hidden = 4;
+  google.protobuf.StringValue creator = 5;
+
+  repeated RuleMatcher rule_matchers = 6;
+
+  message CreateRuleSubgroup {
+    message CreateRule {
+      google.protobuf.StringValue name = 1;
+
+      reserved "rule";
+      reserved 2;
+
+      google.protobuf.StringValue description = 3;
+      google.protobuf.StringValue source_field = 4;
+
+      RuleParameters parameters = 5;
+
+      google.protobuf.BoolValue enabled = 6;
+
+      google.protobuf.UInt32Value order = 7;
+    }
+
+    repeated CreateRule rules = 1;
+
+    google.protobuf.BoolValue enabled = 2;
+    google.protobuf.UInt32Value order = 3;
+  }
+
+  repeated CreateRuleSubgroup rule_subgroups = 7;
+
+  google.protobuf.UInt32Value order = 8;
+}
+
+message GetRuleGroupModelMappingResponse {
+  google.protobuf.Struct rule_definition = 1;
+}

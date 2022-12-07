@@ -98,7 +98,7 @@ message CreateRuleGroupRequest {
   repeated CreateRuleSubgroup rule_subgroups = 7;
 
   google.protobuf.UInt32Value order = 8;
-  optional TeamId team_id = 9;
+  TeamId team_id = 9;
 }
 
 message CreateRuleGroupResponse {

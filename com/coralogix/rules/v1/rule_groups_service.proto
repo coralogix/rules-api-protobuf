@@ -49,7 +49,15 @@ service RuleGroupsService {
   rpc GetRuleGroupModelMapping(GetRuleGroupModelMappingRequest) returns (GetRuleGroupModelMappingResponse){
     option (audit_log_description).description = "get rule mapping";
     option (google.api.http) = {
-      post: "/api/v1/rulegroup-mapping/"
+      post: "/api/v1/rulegroup-mapping"
+      body: "*"
+    };
+  }
+
+  rpc GetCompanyUsageLimits(GetCompanyUsageLimitsRequest) returns (GetCompanyUsageLimitsResponse){
+    option (audit_log_description).description = "get company usage with limits";
+    option (google.api.http) = {
+      post: "/api/v1/rulegroups/company-limits"
       body: "*"
     };
   }
@@ -160,4 +168,17 @@ message GetRuleGroupModelMappingRequest {
 
 message GetRuleGroupModelMappingResponse {
   google.protobuf.Struct rule_definition = 1;
+}
+
+message GetCompanyUsageLimitsRequest {}
+
+message GetCompanyUsageLimitsResponse {
+  message Counts {
+    google.protobuf.Int32Value parsing_themes = 1;
+    google.protobuf.Int32Value groups = 2;
+    google.protobuf.Int32Value rules = 3;
+  }
+  google.protobuf.StringValue company_id = 1;
+  Counts limits = 2;
+  Counts usage = 3;
 }

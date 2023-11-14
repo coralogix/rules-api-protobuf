@@ -62,8 +62,7 @@ service RuleGroupsService {
     };
   }
 
-  rpc GetCompanyUsageLimits(GetCo
-      mpanyUsageLimitsRequest) returns (GetCompanyUsageLimitsResponse){
+  rpc GetCompanyUsageLimits(GetCompanyUsageLimitsRequest) returns (GetCompanyUsageLimitsResponse){
     option (audit_log_description).description = "get company usage with limits";
     option (google.api.http) = {
       post: "/api/v1/rulegroups/company-limits"

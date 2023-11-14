@@ -46,6 +46,14 @@ service RuleGroupsService {
     };
   }
 
+  rpc BulkDeleteRuleGroup(BulkDeleteRuleGroupRequest) returns (BulkDeleteRuleGroupResponse) {
+    option (audit_log_description).description = "bulk delete rule groups";
+    option (google.api.http) = {
+      delete: "/api/v1/rulegroups"
+      body: "group_ids"
+    };
+  }
+
   rpc GetRuleGroupModelMapping(GetRuleGroupModelMappingRequest) returns (GetRuleGroupModelMappingResponse){
     option (audit_log_description).description = "get rule mapping";
     option (google.api.http) = {
@@ -54,7 +62,8 @@ service RuleGroupsService {
     };
   }
 
-  rpc GetCompanyUsageLimits(GetCompanyUsageLimitsRequest) returns (GetCompanyUsageLimitsResponse){
+  rpc GetCompanyUsageLimits(GetCo
+      mpanyUsageLimitsRequest) returns (GetCompanyUsageLimitsResponse){
     option (audit_log_description).description = "get company usage with limits";
     option (google.api.http) = {
       post: "/api/v1/rulegroups/company-limits"
@@ -127,7 +136,13 @@ message DeleteRuleGroupRequest {
   string group_id = 1;
 }
 
+message BulkDeleteRuleGroupRequest {
+  repeated string group_ids = 1;
+}
+
 message DeleteRuleGroupResponse {}
+
+message BulkDeleteRuleGroupResponse {}
 
 message GetRuleGroupModelMappingRequest {
   google.protobuf.StringValue name = 1;

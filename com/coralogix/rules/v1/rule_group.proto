@@ -5,8 +5,14 @@ package com.coralogix.rules.v1;
 import "google/protobuf/wrappers.proto";
 import "com/coralogix/rules/v1/rule_matcher.proto";
 import "com/coralogix/rules/v1/rule_subgroup.proto";
+import "com/coralogix/openapi/v1/annotations.proto";
 
 message RuleGroup {
+  option (com.coralogix.openapi.v1.message) = {
+    description: "Parsing roule group resource model"
+    resource: true
+  };
+
   google.protobuf.StringValue id = 1;
   google.protobuf.StringValue name = 2;
   google.protobuf.StringValue description = 3;

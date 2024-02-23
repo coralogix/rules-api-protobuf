@@ -9,6 +9,7 @@ import "com/coralogix/rules/v1/rule_group.proto";
 import "com/coralogix/rules/v1/rule_matcher.proto";
 import "google/protobuf/descriptor.proto";
 import "google/api/annotations.proto";
+import "com/coralogix/openapi/v1/annotations.proto";
 
 message AuditLogDescription {
   optional string description = 1;
@@ -19,10 +20,24 @@ extend google.protobuf.MethodOptions {
 }
 
 service RuleGroupsService {
+  option (com.coralogix.openapi.v1.service) = {
+    description: "API to define, query, and manage your rules"
+    resource_name: "RuleGroup"
+  };
   rpc GetRuleGroup(GetRuleGroupRequest) returns (GetRuleGroupResponse) {
     option (audit_log_description).description = "get rule group";
     option (google.api.http) = {
       get: "/api/v1/rulegroups/{group_id}"
+
+      additional_bindings: {
+        get: "/v1/rulegroups/{group_id}"
+        response_body: "rule_group"
+      }
+    };
+    option (com.coralogix.openapi.v1.method) = {
+      http_rule_index: 1
+      resource: true
+      description: "Gets rule group by groupid"
     };
   }
   rpc ListRuleGroups(ListRuleGroupsRequest) returns (ListRuleGroupsResponse) {
@@ -36,6 +51,20 @@ service RuleGroupsService {
     option (google.api.http) = {
       post: "/api/v1/rulegroups/"
       body: "*"
+
+      additional_bindings: {
+        post: "/v1/rulegroups"
+        body: "*"
+        response_body: "rule_group"
+      }
+    };
+    option (com.coralogix.openapi.v1.method) = {
+      http_rule_index: 1
+      resource: true
+      description: "Creates rule group"
+      extensions: [
+        {key: "x-codegen-request-body-name" value: "\"RuleGroupPrototype\""}
+      ]
     };
   }
   rpc UpdateRuleGroup(UpdateRuleGroupRequest) returns (UpdateRuleGroupResponse) {
@@ -43,12 +72,35 @@ service RuleGroupsService {
     option (google.api.http) = {
       put: "/api/v1/rulegroups/{group_id}"
       body: "rule_group"
+
+      additional_bindings: {
+        put: "/v1/rulegroups/{group_id}"
+        body: "rule_group"
+        response_body: "rule_group"
+      }
+    };
+    option (com.coralogix.openapi.v1.method) = {
+      http_rule_index: 1
+      resource: true
+      description: "Updates rule group by groupid"
+      extensions: [
+        {key: "x-codegen-request-body-name" value: "\"RuleGroupPrototype\""}
+      ]
     };
   }
   rpc DeleteRuleGroup(DeleteRuleGroupRequest) returns (DeleteRuleGroupResponse) {
     option (audit_log_description).description = "delete rule group";
     option (google.api.http) = {
       delete: "/api/v1/rulegroups/{group_id}"
+
+      additional_bindings: {
+        delete: "/v1/rulegroups/{group_id}"
+      }
+    };
+    option (com.coralogix.openapi.v1.method) = {
+      http_rule_index: 1
+      resource: true
+      description: "Deletes rule group by groupid"
     };
   }
 
@@ -92,6 +144,12 @@ message GetRuleGroupResponse {
 }
 
 message CreateRuleGroupRequest {
+  option (com.coralogix.openapi.v1.message) = {
+    description: "Parsing rule group resource model"
+    resource: true
+    name: "RuleGroupPrototype"
+  };
+
   google.protobuf.StringValue name = 1;
   google.protobuf.StringValue description = 2;
   google.protobuf.BoolValue enabled = 3;

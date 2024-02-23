@@ -36,7 +36,6 @@ message MethodOpenAPI {
     bool datasource = 10;                        // Indicates if the method is a datasource.
     string request_body_example = 11;            // A free-form property to include a JSON example of the request body. This is copied to generated schema. Quotes must be escaped.
     string response_body_example = 12;           // A free-form property to include a JSON example of the response body. This is copied to generated schema. Quotes must be escaped.
-
 }
 
 // Extending google.protobuf.MethodOptions to include MethodOpenAPI annotations.
@@ -137,7 +136,7 @@ message ApiError {
         // Error code
         ErrorCode code = 1 [(com.coralogix.openapi.v1.field) = { required: true } ];
          // Human-readable error message
-        google.protobuf.StringValue message = 2;   
+        google.protobuf.StringValue message = 2;
         // Additional information about the error
         google.protobuf.StringValue more_info = 3;
     }
@@ -146,5 +145,5 @@ message ApiError {
     // UUID uniquely identifying the request
     google.protobuf.StringValue trace = 2 [(com.coralogix.openapi.v1.field) = { required: true } ];
     // HTTP status code associated with the error
-    google.protobuf.Int32Value status_code = 3;   
+    google.protobuf.Int32Value status_code = 3;
 }

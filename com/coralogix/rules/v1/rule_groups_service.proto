@@ -25,6 +25,12 @@ service RuleGroupsService {
       get: "/api/v1/rulegroups/{group_id}"
     };
   }
+  rpc ListRuleGroups(ListRuleGroupsRequest) returns (ListRuleGroupsResponse) {
+    option (audit_log_description).description = "get all rule groups";
+    option (google.api.http) = {
+      get: "/api/v1/rulegroups"
+    };
+  }
   rpc CreateRuleGroup(CreateRuleGroupRequest) returns (CreateRuleGroupResponse) {
     option (audit_log_description).description = "create rule group";
     option (google.api.http) = {
@@ -73,6 +79,12 @@ service RuleGroupsService {
 
 message GetRuleGroupRequest {
   string group_id = 1;
+}
+
+message ListRuleGroupsRequest {}
+
+message ListRuleGroupsResponse {
+  repeated RuleGroup rule_groups = 1;
 }
 
 message GetRuleGroupResponse {

@@ -10,6 +10,8 @@ import "com/coralogix/rules/v1/rule_matcher.proto";
 import "google/protobuf/descriptor.proto";
 import "google/api/annotations.proto";
 
+option go_package = "com/coralogixapis/rules/v1";
+
 message AuditLogDescription {
   optional string description = 1;
 }

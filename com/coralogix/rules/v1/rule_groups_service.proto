@@ -25,7 +25,7 @@ service RuleGroupsService {
       get: "/api/v1/rulegroups/{group_id}"
     };
   }
-  rpc GetAllRuleGroups(GetAllRuleGroupsRequest) returns (GetAllRuleGroupsResponse) {
+  rpc ListRuleGroups(ListRuleGroupsRequest) returns (ListRuleGroupsResponse) {
     option (audit_log_description).description = "get all rule groups";
     option (google.api.http) = {
       get: "/api/v1/rulegroups"
@@ -81,9 +81,9 @@ message GetRuleGroupRequest {
   string group_id = 1;
 }
 
-message GetAllRuleGroupsRequest {}
+message ListRuleGroupsRequest {}
 
-message GetAllRuleGroupsResponse {
+message ListRuleGroupsResponse {
   repeated RuleGroup rule_groups = 1;
 }
 

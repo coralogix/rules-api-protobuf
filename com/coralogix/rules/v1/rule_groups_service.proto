@@ -38,6 +38,7 @@ service RuleGroupsService {
       http_rule_index: 1
       resource: true
       description: "Gets rule group by groupid"
+      response_body_example: "{\"id\":\"a2ddf5dd-f77f-4bea-b782-4068c510e15d\",\"name\":\"mysql-extractrule\",\"description\":\"mysql-cloudwatch audit logs  parser\",\"creator\":\"bot@coralogix.com\",\"enabled\":true,\"hidden\":false,\"rule_matchers\":[{\"subsystem_name\":{\"value\":\"mysql-cloudwatch\"}}],\"rule_subgroups\":[{\"id\":\"2df585fe-be27-4062-aa42-e740193bfc75\",\"rules\":[{\"id\":\"bd585f17-278a-4908-b05b-54fd6bf693be\",\"name\":\"mysql-parse\",\"description\":\"mysql-parse\",\"source_field\":\"text\",\"parameters\":{\"parse_parameters\":{\"destination_field\":\"text\",\"rule\":\"(?P<timestamp>[^,]+),(?P<hostname>[^,]+),(?P<username>[^,]+),(?P<ip>[^,]+),(?P<connectionId>[0-9]+),(?P<queryId>[0-9]+),(?P<operation>[^,]+),(?P<database>[^,]+),'?(?P<object>.*)'?,(?P<returnCode>[0-9]+)\"}},\"enabled\":true,\"order\":1}],\"enabled\":true,\"order\":1}],\"order\":5}"
     };
   }
   rpc ListRuleGroups(ListRuleGroupsRequest) returns (ListRuleGroupsResponse) {
@@ -65,6 +66,8 @@ service RuleGroupsService {
       extensions: [
         {key: "x-codegen-request-body-name" value: "\"RuleGroupPrototype\""}
       ]
+      request_body_example: "{\"name\":\"mysql-extractrule\",\"description\":\"mysql-cloudwatch audit logs  parser\",\"creator\":\"bot@coralogix.com\",\"enabled\":true,\"hidden\":false,\"rule_matchers\":[{\"subsystem_name\":{\"value\":\"mysql-cloudwatch\"}}],\"rule_subgroups\":[{\"rules\":[{\"name\":\"mysql-parse\",\"description\":\"mysql-parse\",\"source_field\":\"text\",\"parameters\":{\"parse_parameters\":{\"destination_field\":\"text\",\"rule\":\"(?P<timestamp>[^,]+),(?P<hostname>[^,]+),(?P<username>[^,]+),(?P<ip>[^,]+),(?P<connectionId>[0-9]+),(?P<queryId>[0-9]+),(?P<operation>[^,]+),(?P<database>[^,]+),'?(?P<object>.*)'?,(?P<returnCode>[0-9]+)\"}},\"enabled\":true,\"order\":1}],\"enabled\":true,\"order\":1}],\"order\":39}"
+      response_body_example: "{\"id\":\"dae394d9-027a-4f95-a441-c7f3d4ea857d\",\"name\":\"mysql-extractrule\",\"description\":\"mysql-cloudwatch audit logs  parser\",\"creator\":\"bot@coralogix.com\",\"enabled\":true,\"hidden\":false,\"rule_matchers\":[{\"subsystem_name\":{\"value\":\"mysql-cloudwatch\"}}],\"rule_subgroups\":[{\"id\":\"7a4770de-b2db-4e68-a891-68a43e9fea3c\",\"rules\":[{\"id\":\"d032de36-1dd2-410d-a992-fc150337df83\",\"name\":\"mysql-parse\",\"description\":\"mysql-parse\",\"source_field\":\"text\",\"parameters\":{\"parse_parameters\":{\"destination_field\":\"text\",\"rule\":\"(?P<timestamp>[^,]+),(?P<hostname>[^,]+),(?P<username>[^,]+),(?P<ip>[^,]+),(?P<connectionId>[0-9]+),(?P<queryId>[0-9]+),(?P<operation>[^,]+),(?P<database>[^,]+),'?(?P<object>.*)'?,(?P<returnCode>[0-9]+)\"}},\"enabled\":true,\"order\":1}],\"enabled\":true,\"order\":1}],\"order\":39}"
     };
   }
   rpc UpdateRuleGroup(UpdateRuleGroupRequest) returns (UpdateRuleGroupResponse) {
@@ -86,6 +89,8 @@ service RuleGroupsService {
       extensions: [
         {key: "x-codegen-request-body-name" value: "\"RuleGroupPrototype\""}
       ]
+      request_body_example: "{\"name\":\"mysql-extractrule\",\"description\":\"mysql-cloudwatch audit logs parser\",\"creator\":\"bot@coralogix.com\",\"enabled\":true,\"hidden\":false,\"rule_matchers\":[{\"subsystem_name\":{\"value\":\"mysql-cloudwatch\"}}],\"rule_subgroups\":[{\"rules\":[{\"name\":\"mysql-parse\",\"description\":\"mysql-parse\",\"source_field\":\"text\",\"parameters\":{\"parse_parameters\":{\"destination_field\":\"text\",\"rule\":\"(?P<timestamp>[^,]+),(?P<hostname>[^,]+),(?P<username>[^,]+),(?P<ip>[^,]+),(?P<connectionId>[0-9]+),(?P<queryId>[0-9]+),(?P<operation>[^,]+),(?P<database>[^,]+),'?(?P<object>.*)'?,(?P<returnCode>[0-9]+)\"}},\"enabled\":true,\"order\":1}],\"enabled\":true,\"order\":1}],\"order\":39}"
+      response_body_example: "{\"id\":\"dae394d9-027a-4f95-a441-c7f3d4ea857d\",\"name\":\"mysql-extractrule\",\"description\":\"mysql-cloudwatch audit logs parser\",\"creator\":\"bot@coralogix.com\",\"enabled\":true,\"hidden\":false,\"rule_matchers\":[{\"subsystem_name\":{\"value\":\"mysql-cloudwatch\"}}],\"rule_subgroups\":[{\"id\":\"7a4770de-b2db-4e68-a891-68a43e9fea3c\",\"rules\":[{\"id\":\"d032de36-1dd2-410d-a992-fc150337df83\",\"name\":\"mysql-parse\",\"description\":\"mysql-parse\",\"source_field\":\"text\",\"parameters\":{\"parse_parameters\":{\"destination_field\":\"text\",\"rule\":\"(?P<timestamp>[^,]+),(?P<hostname>[^,]+),(?P<username>[^,]+),(?P<ip>[^,]+),(?P<connectionId>[0-9]+),(?P<queryId>[0-9]+),(?P<operation>[^,]+),(?P<database>[^,]+),'?(?P<object>.*)'?,(?P<returnCode>[0-9]+)\"}},\"enabled\":true,\"order\":1}],\"enabled\":true,\"order\":1}],\"order\":39}"
     };
   }
   rpc DeleteRuleGroup(DeleteRuleGroupRequest) returns (DeleteRuleGroupResponse) {

@@ -3,23 +3,47 @@ syntax = "proto3";
 package com.coralogix.rules.v1;
 
 import "google/protobuf/wrappers.proto";
+import "com/coralogix/openapi/v1/annotations.proto";
 
+// A matcher which will decide whether or not to run a rule group on a log
 message RuleMatcher {
+  option (com.coralogix.openapi.v1.message) = {
+    resource: true
+  };
+  // A constraint. If multiple are chosen, an "OR" operator will apply on ones of the same type wil "AND" will apply on different types
   oneof constraint {
-    ApplicationNameConstraint application_name = 1;
-    SubsystemNameConstraint subsystem_name = 2;
-    SeverityConstraint severity = 9;
+    // ApplicationName constraint
+    ApplicationNameConstraint application_name = 1 [(com.coralogix.openapi.v1.field) = {
+      required: true
+    }];
+    // SubsystemName constraint
+    SubsystemNameConstraint subsystem_name = 2 [(com.coralogix.openapi.v1.field) = {
+      required: true
+    }];
+    // Severity constraint
+    SeverityConstraint severity = 9 [(com.coralogix.openapi.v1.field) = {
+      required: true
+    }];
   }
 }
 
+// Application constraint
 message ApplicationNameConstraint {
-  google.protobuf.StringValue value = 1;
+  // Only logs with this ApplicationName value will match
+  google.protobuf.StringValue value = 1 [(com.coralogix.openapi.v1.field) = {
+    required: true
+  }];
 }
 
+// SubsystemName constraint
 message SubsystemNameConstraint {
-  google.protobuf.StringValue value = 1;
+  // Only logs with this SubsystemName value will match
+  google.protobuf.StringValue value = 1 [(com.coralogix.openapi.v1.field) = {
+    required: true
+  }];
 }
 
+// Severity constraint
 message SeverityConstraint {
   enum Value {
     VALUE_DEBUG_OR_UNSPECIFIED = 0;
@@ -29,6 +53,8 @@ message SeverityConstraint {
     VALUE_ERROR = 4;
     VALUE_CRITICAL = 5;
   }
-
-  Value value = 1;
+  // Only logs with this severity value will match
+  Value value = 1 [(com.coralogix.openapi.v1.field) = {
+    required: true
+  }];
 }

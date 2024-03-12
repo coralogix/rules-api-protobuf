@@ -7,24 +7,28 @@ import "com/coralogix/rules/v1/rule_matcher.proto";
 import "com/coralogix/rules/v1/rule_subgroup.proto";
 import "com/coralogix/openapi/v1/annotations.proto";
 
+// Parsing rule group
 message RuleGroup {
   option (com.coralogix.openapi.v1.message) = {
-    description: "Parsing roule group resource model"
     resource: true
   };
-
   google.protobuf.StringValue id = 1;
   google.protobuf.StringValue name = 2;
+  // A description for the rule group, should express what is the rule group purpose
   google.protobuf.StringValue description = 3;
 
+  // The creator of the rule group
   google.protobuf.StringValue creator = 6;
 
+  // Whether or not the rule is enabled
   google.protobuf.BoolValue enabled = 7;
+  // Not used
   google.protobuf.BoolValue hidden = 8;
-
+  // // Optional rule matchers which if matched will make the rule go through the rule group
   repeated RuleMatcher rule_matchers = 9;
+  // Rule subgroups. Will try to execute the first rule subgroup, and if not matched will try to match the next one in order
   repeated RuleSubgroup rule_subgroups = 10;
-
+  // // The order in which the rule group will be evaluated. The lower the order, the more priority the group will have. Not providing the order will by default create a group with the last order
   google.protobuf.UInt32Value order = 11;
 }
 

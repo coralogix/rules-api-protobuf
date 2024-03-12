@@ -4,10 +4,18 @@ package com.coralogix.rules.v1;
 
 import "google/protobuf/wrappers.proto";
 import "com/coralogix/rules/v1/rule.proto";
+import "com/coralogix/openapi/v1/annotations.proto";
 
+// A subgroup inside the rule group. Will try to run all the rules inside of it one after the other. If one rule didn't match, the whole rule subgroup won't match
 message RuleSubgroup {
+  option (com.coralogix.openapi.v1.message) = {
+    resource: true
+  };
   google.protobuf.StringValue id = 1;
+  // Rules to run on the log
   repeated Rule rules = 2;
+  // Whether or not the rule subgroup is enabled
   google.protobuf.BoolValue enabled = 3;
+  // The ordering of the rule subgroup. Lower order will run first. 0 is considered as no value
   google.protobuf.UInt32Value order = 4;
 }

@@ -209,6 +209,7 @@ message CreateRuleGroupRequest {
   // Not used
   google.protobuf.BoolValue hidden = 4 [(com.coralogix.openapi.v1.field) = {
     required: false,
+    skip_in: [CLOUD_IBM]
   }, deprecated=true];
   // The creator of the rule group
   google.protobuf.StringValue creator = 5 [(com.coralogix.openapi.v1.field) = {
@@ -294,6 +295,7 @@ message CreateRuleGroupRequest {
   // Not used
   TeamId team_id = 9 [(com.coralogix.openapi.v1.field) = {
     required: false,
+    skip_in: [CLOUD_IBM]
   }, deprecated=true];
 }
 

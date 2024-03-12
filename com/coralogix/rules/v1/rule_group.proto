@@ -23,7 +23,9 @@ message RuleGroup {
   // Whether or not the rule is enabled
   google.protobuf.BoolValue enabled = 7;
   // Not used
-  google.protobuf.BoolValue hidden = 8;
+  google.protobuf.BoolValue hidden = 8 [(openapi.v1.field) = {
+    skip_in: [CLOUD_IBM]
+  }];
   // // Optional rule matchers which if matched will make the rule go through the rule group
   repeated RuleMatcher rule_matchers = 9;
   // Rule subgroups. Will try to execute the first rule subgroup, and if not matched will try to match the next one in order

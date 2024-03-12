@@ -133,6 +133,7 @@ message JsonExtractParameters {
   // Not used
   google.protobuf.StringValue rule = 2 [(com.coralogix.openapi.v1.field) = {
     required: false,
+    skip_in: [CLOUD_IBM]
   }, deprecated = true];
 }
 
@@ -279,6 +280,7 @@ message JsonParseParameters {
   // Not used
   google.protobuf.BoolValue escaped_value = 3 [(com.coralogix.openapi.v1.field) = {
     required: false,
+    skip_in: [CLOUD_IBM]
   }, deprecated = true];
   // Destination field in which to put the json stringified content
   google.protobuf.BoolValue override_dest = 4 [(com.coralogix.openapi.v1.field) = {

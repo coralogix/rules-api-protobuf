@@ -137,7 +137,7 @@ service RuleGroupsService {
     option (com.coralogix.openapi.v1.method) = {
       http_rule_index: 1
       resource: true
-      description: "Get rule mapping"
+      description: "Convenient method to format request in json-like format"
     };
   }
 
@@ -166,8 +166,13 @@ message GetRuleGroupRequest {
     min_length : 36,
     max_length : 36,
     pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
-    example: "\"3dc02998-0b50-4ea8-b68a-4779d716fa1f\"",
+    example: "\"3dc02998-0b50-4ea8-b68a-4779d716fa1f\""
   }];
+}
+
+// Response model for GetRuleGroup rpc
+message GetRuleGroupResponse {
+  RuleGroup rule_group = 1;
 }
 
 // Request model for ListRuleGroups rpc
@@ -216,7 +221,6 @@ message CreateRuleGroupRequest {
     required: false,
     example: "\"terraform-rules-creator\""
   }];
-
   // Optional rule matchers which if matched will make the rule go through the rule group
   repeated RuleMatcher rule_matchers = 6 [(com.coralogix.openapi.v1.field) = {
     required: false
@@ -255,7 +259,6 @@ message CreateRuleGroupRequest {
       RuleParameters parameters = 5 [(com.coralogix.openapi.v1.field) = {
         required: true
       }];
-
       // Rule parameters which define how the rule will execute
       google.protobuf.BoolValue enabled = 6 [(com.coralogix.openapi.v1.field) = {
         required: true
@@ -287,11 +290,10 @@ message CreateRuleGroupRequest {
     required: true,
     min_items: 1
   }];
-
   // The order in which the rule group will be evaluated. The lower the order, the more priority the group will have. Not providing the order will by default create a group with the last order
   google.protobuf.UInt32Value order = 8 [(com.coralogix.openapi.v1.field) = {
     required: false,
-  }, deprecated=true];
+  }];
   // Not used
   TeamId team_id = 9 [(com.coralogix.openapi.v1.field) = {
     required: false,
@@ -299,86 +301,228 @@ message CreateRuleGroupRequest {
   }, deprecated=true];
 }
 
-message GetRuleGroupResponse {
-  RuleGroup rule_group = 1;
-}
-
+// Response model for CreateRuleGroup rpc
 message CreateRuleGroupResponse {
+  option (com.coralogix.openapi.v1.message) = {
+    resource: true
+  };
+  // Created rule group
   RuleGroup rule_group = 1;
 }
 
+// Request model for UpdateRuleGroup rpc
 message UpdateRuleGroupRequest {
-  google.protobuf.StringValue group_id = 1;
+  option (com.coralogix.openapi.v1.message) = {
+    resource: true
+  };
+  google.protobuf.StringValue group_id = 1 [(com.coralogix.openapi.v1.field) = {
+    required: true,
+    format : "uuid",
+    min_length : 36,
+    max_length : 36,
+    pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+    example: "\"3dc02998-0b50-4ea8-b68a-4779d716fa1f\""
+  }];
 
-  CreateRuleGroupRequest rule_group = 2;
+  // The rule group to update
+  CreateRuleGroupRequest rule_group = 2 [(com.coralogix.openapi.v1.field) = {
+    required: true
+  }];
 }
 
+// Response model for UpdateRuleGroup rpc
 message UpdateRuleGroupResponse {
+  option (com.coralogix.openapi.v1.message) = {
+    resource: true
+  };
+  // The updated rule group
   RuleGroup rule_group = 1;
 }
 
+// Request model for DeleteRuleGroup rpc
 message DeleteRuleGroupRequest {
-  string group_id = 1;
+  option (com.coralogix.openapi.v1.message) = {
+    resource: true
+  };
+  // The group id to delete
+  string group_id = 1 [(com.coralogix.openapi.v1.field) = {
+    required: true,
+    format : "uuid",
+    min_length : 36,
+    max_length : 36,
+    pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+    example: "\"3dc02998-0b50-4ea8-b68a-4779d716fa1f\""
+  }];
 }
 
+// Response model for DeleteRuleGroup rpc
+message DeleteRuleGroupResponse {
+  option (com.coralogix.openapi.v1.message) = {
+    resource: true
+  };
+}
+
+// Request model for BulkDeleteRuleGroup rpc
 message BulkDeleteRuleGroupRequest {
-  repeated string group_ids = 1;
+  option (com.coralogix.openapi.v1.message) = {
+    resource: true
+  };
+  // The group ids to delete
+  repeated string group_ids = 1 [(com.coralogix.openapi.v1.field) = {
+    required: true,
+    format : "uuid",
+    min_length : 36,
+    max_length : 36,
+    min_items: 1,
+    pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+    example: "\"3dc02998-0b50-4ea8-b68a-4779d716fa1f\""
+  }];
 }
 
-message DeleteRuleGroupResponse {}
+// Response model for BulkDeleteRuleGroup rpc
+message BulkDeleteRuleGroupResponse {
+  option (com.coralogix.openapi.v1.message) = {
+    resource: true
+  };
+}
 
-message BulkDeleteRuleGroupResponse {}
-
+// Request model for GetRuleGroupModelMapping rpc
 message GetRuleGroupModelMappingRequest {
-  google.protobuf.StringValue name = 1;
-  google.protobuf.StringValue description = 2;
-  google.protobuf.BoolValue enabled = 3;
-  google.protobuf.BoolValue hidden = 4;
-  google.protobuf.StringValue creator = 5;
-
+  option (com.coralogix.openapi.v1.message) = {
+    resource: true
+  };
+  google.protobuf.StringValue name = 1 [(com.coralogix.openapi.v1.field) = {
+    required: true,
+    min_length : 1,
+    max_length : 255,
+    example: "\"rule group\"",
+  }];
+  // A description for the rule group, should express what is the rule group purpose
+  google.protobuf.StringValue description = 2 [(com.coralogix.openapi.v1.field) = {
+    required: false,
+    example: "\"Rule group to extract severity from logs\"",
+  }];
+  // Whether or not the rule is enabled
+  google.protobuf.BoolValue enabled = 3 [(com.coralogix.openapi.v1.field) = {
+    required: false
+  }];
+  // Not used
+  google.protobuf.BoolValue hidden = 4 [(com.coralogix.openapi.v1.field) = {
+    required: false,
+    skip_in: [CLOUD_IBM]
+  }, deprecated=true];
+  // The creator of the rule group
+  google.protobuf.StringValue creator = 5 [(com.coralogix.openapi.v1.field) = {
+    required: false,
+    example: "\"terraform-rules-creator\""
+  }];
+  // Optional rule matchers which if matched will make the rule go through the rule group
   repeated RuleMatcher rule_matchers = 6;
 
+  // A subgroup inside the rule group. Will try to run all the rules inside of it one after the other. If one rule didn't match, the whole rule subgroup won't match
   message CreateRuleSubgroup {
+    option (com.coralogix.openapi.v1.message) = {
+      resource: true
+    };
     message CreateRule {
-      google.protobuf.StringValue name = 1;
+      option (com.coralogix.openapi.v1.message) = {
+        resource: true
+      };
+      google.protobuf.StringValue name = 1 [(com.coralogix.openapi.v1.field) = {
+        required: false,
+        example: "\"Extract Timestamp\""
+      }];
 
       reserved "rule";
       reserved 2;
 
-      google.protobuf.StringValue description = 3;
-      google.protobuf.StringValue source_field = 4;
-
-      RuleParameters parameters = 5;
-
-      google.protobuf.BoolValue enabled = 6;
-
-      google.protobuf.UInt32Value order = 7;
+      // Optional description for the rule
+      google.protobuf.StringValue description = 3 [(com.coralogix.openapi.v1.field) = {
+        required: false,
+        example: "\"Extract timestamp with ISO format for Mysql logs\""
+      }];
+      // The field on which to execute the rule
+      google.protobuf.StringValue source_field = 4 [(com.coralogix.openapi.v1.field) = {
+        required: true,
+        example: "\"log_obj.date_time\""
+      }];
+      // Rule parameters which define how the rule will execute
+      RuleParameters parameters = 5 [(com.coralogix.openapi.v1.field) = {
+        required: true
+      }];
+      // Rule parameters which define how the rule will execute
+      google.protobuf.BoolValue enabled = 6 [(com.coralogix.openapi.v1.field) = {
+        required: true
+      }];
+      // The order in which the rule will execute inside the rule subgroup
+      google.protobuf.UInt32Value order = 7 [(com.coralogix.openapi.v1.field) = {
+        required: true
+      }];
     }
 
-    repeated CreateRule rules = 1;
-
-    google.protobuf.BoolValue enabled = 2;
-    google.protobuf.UInt32Value order = 3;
+    // Rules to run on the log
+    repeated CreateRule rules = 1 [(com.coralogix.openapi.v1.field) = {
+      required: true,
+      min_items: 1
+    }];
+    // Whether or not the rule subgroup is enabled
+    google.protobuf.BoolValue enabled = 2 [(com.coralogix.openapi.v1.field) = {
+      required: false,
+    }];
+    // The ordering of the rule subgroup. Lower order will run first. 0 is considered as no value
+    google.protobuf.UInt32Value order = 3 [(com.coralogix.openapi.v1.field) = {
+      required: true
+    }];
   }
-
-  repeated CreateRuleSubgroup rule_subgroups = 7;
-
-  google.protobuf.UInt32Value order = 8;
+  // Rule subgroups. Will try to execute the first rule subgroup, and if not matched will try to match the next one in order
+  repeated CreateRuleSubgroup rule_subgroups = 7 [(com.coralogix.openapi.v1.field) = {
+    required: true,
+    min_items: 1
+  }];
+  // The order in which the rule group will be evaluated. The lower the order, the more priority the group will have. Not providing the order will by default create a group with the last order
+  google.protobuf.UInt32Value order = 8 [(com.coralogix.openapi.v1.field) = {
+    required: false,
+  }];
 }
 
+// Response model for GetRuleGroupModelMapping rpc
 message GetRuleGroupModelMappingResponse {
+  option (com.coralogix.openapi.v1.message) = {
+    resource: true
+  };
+  // The create rule group request formatted as a json like object
   google.protobuf.Struct rule_definition = 1;
 }
 
-message GetCompanyUsageLimitsRequest {}
+// Request model for GetCompanyUsageLimits rpc
+message GetCompanyUsageLimitsRequest {
+  option (com.coralogix.openapi.v1.message) = {
+    resource: true
+  };
+}
 
+// Response model for GetCompanyUsageLimits rpc
 message GetCompanyUsageLimitsResponse {
+  option (com.coralogix.openapi.v1.message) = {
+    resource: true
+  };
   message Counts {
+    option (com.coralogix.openapi.v1.message) = {
+      resource: true
+    };
+    // Number of allowed rule groups
     google.protobuf.Int32Value parsing_themes = 1;
+    // Number of allowed rule subgroups
     google.protobuf.Int32Value groups = 2;
+    // Number of allowed rules
     google.protobuf.Int32Value rules = 3;
   }
-  google.protobuf.StringValue company_id = 1;
+
+  google.protobuf.StringValue company_id = 1 [(com.coralogix.openapi.v1.field) = {
+    skip_in: [CLOUD_IBM]
+  }, deprecated=true];
+  // Defined limits for the account
   Counts limits = 2;
+  // Account usage
   Counts usage = 3;
 }

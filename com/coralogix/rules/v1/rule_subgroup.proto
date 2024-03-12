@@ -11,11 +11,25 @@ message RuleSubgroup {
   option (com.coralogix.openapi.v1.message) = {
     resource: true
   };
-  google.protobuf.StringValue id = 1;
+  google.protobuf.StringValue id = 1 [(com.coralogix.openapi.v1.field) = {
+    required: true,
+    format : "uuid",
+    min_length : 36,
+    max_length : 36,
+    pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+    example: "\"3dc02998-0b50-4ea8-b68a-4779d716fa1f\"",
+  }];
   // Rules to run on the log
-  repeated Rule rules = 2;
+  repeated Rule rules = 2 [(com.coralogix.openapi.v1.field) = {
+    required: true,
+    min_items: 1
+  }];
   // Whether or not the rule subgroup is enabled
-  google.protobuf.BoolValue enabled = 3;
+  google.protobuf.BoolValue enabled = 3 [(com.coralogix.openapi.v1.field) = {
+    required: false,
+  }];
   // The ordering of the rule subgroup. Lower order will run first. 0 is considered as no value
-  google.protobuf.UInt32Value order = 4;
+  google.protobuf.UInt32Value order = 4 [(com.coralogix.openapi.v1.field) = {
+    required: true
+  }];
 }

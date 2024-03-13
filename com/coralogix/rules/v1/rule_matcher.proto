@@ -7,9 +7,6 @@ import "com/coralogix/openapi/v1/annotations.proto";
 
 // A matcher which will decide whether or not to run a rule group on a log
 message RuleMatcher {
-  option (com.coralogix.openapi.v1.message) = {
-    resource: true
-  };
   // A constraint. If multiple are chosen, an "OR" operator will apply on ones of the same type wil "AND" will apply on different types
   oneof constraint {
     // ApplicationName constraint

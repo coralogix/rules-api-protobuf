@@ -7,9 +7,6 @@ import "com/coralogix/openapi/v1/annotations.proto";
 
 // Rule to execute on a log
 message Rule {
-  option (com.coralogix.openapi.v1.message) = {
-    resource: true
-  };
   google.protobuf.StringValue id = 1 [(com.coralogix.openapi.v1.field) = {
     required: true,
     format : "uuid",
@@ -51,9 +48,6 @@ message Rule {
 
 // Parameters for a rule which specifies how it should run
 message RuleParameters {
-  option (com.coralogix.openapi.v1.message) = {
-    resource: true
-  };
   oneof rule_parameters {
     // Parameters for text extraction rule
     ExtractParameters extract_parameters = 1 [(com.coralogix.openapi.v1.field) = {
@@ -100,9 +94,6 @@ message RuleParameters {
 
 // Extract rule parameters
 message ExtractParameters {
-  option (com.coralogix.openapi.v1.message) = {
-    resource: true
-  };
   reserved 1;
   reserved "destinationField";
   // Regex which will parse the source field and extract the json keys from it while retaining the original log
@@ -114,9 +105,6 @@ message ExtractParameters {
 
 // Json extract rule parameters
 message JsonExtractParameters {
-  option (com.coralogix.openapi.v1.message) = {
-    resource: true
-  };
   // Enum which specify different types of metadata fields
   enum DestinationField {
     DESTINATION_FIELD_CATEGORY_OR_UNSPECIFIED = 0;
@@ -139,9 +127,6 @@ message JsonExtractParameters {
 
 // Replace rule parameters
 message ReplaceParameters {
-  option (com.coralogix.openapi.v1.message) = {
-    resource: true
-  };
   // In which field to put the modified text
   google.protobuf.StringValue destination_field = 1 [(com.coralogix.openapi.v1.field) = {
     required: true,
@@ -161,9 +146,6 @@ message ReplaceParameters {
 
 // Parse rule parameters
 message ParseParameters {
-  option (com.coralogix.openapi.v1.message) = {
-    resource: true
-  };
   // In which field to put the parsed text
   google.protobuf.StringValue destination_field = 1 [(com.coralogix.openapi.v1.field) = {
     required: true,
@@ -178,9 +160,6 @@ message ParseParameters {
 
 // Allow rule parameters
 message AllowParameters {
-  option (com.coralogix.openapi.v1.message) = {
-    resource: true
-  };
   // If true matched logs will be blocked, otherwise matched logs will be kept
   google.protobuf.BoolValue keep_blocked_logs = 1 [(com.coralogix.openapi.v1.field) = {
     required: true
@@ -194,9 +173,6 @@ message AllowParameters {
 
 // Block rule parameters
 message BlockParameters {
-  option (com.coralogix.openapi.v1.message) = {
-    resource: true
-  };
   // If true matched logs will be kept, otherwise matched logs will be blocked
   google.protobuf.BoolValue keep_blocked_logs = 1 [(com.coralogix.openapi.v1.field) = {
     required: true,
@@ -210,9 +186,6 @@ message BlockParameters {
 
 // Extract timestamp rule parameters
 message ExtractTimestampParameters {
-  option (com.coralogix.openapi.v1.message) = {
-    resource: true
-  };
   // Time format to use when extracting the time
   enum FormatStandard {
     FORMAT_STANDARD_STRFTIME_OR_UNSPECIFIED = 0;
@@ -237,9 +210,6 @@ message ExtractTimestampParameters {
 
 // Remove fields rule parameters
 message RemoveFieldsParameters {
-  option (com.coralogix.openapi.v1.message) = {
-    resource: true
-  };
   // Json field paths to drop from the log
   repeated string fields = 1 [(com.coralogix.openapi.v1.field) = {
     required: true,
@@ -249,9 +219,6 @@ message RemoveFieldsParameters {
 
 // Json stringify rule parameters
 message JsonStringifyParameters {
-  option (com.coralogix.openapi.v1.message) = {
-    resource: true
-  };
   // Destination field in which to put the json stringified content
   google.protobuf.StringValue destination_field = 1 [(com.coralogix.openapi.v1.field) = {
     required: true,
@@ -265,9 +232,6 @@ message JsonStringifyParameters {
 
 // Json parse rule parameters
 message JsonParseParameters {
-  option (com.coralogix.openapi.v1.message) = {
-    resource: true
-  };
   // Destination field under which to put the json object
   google.protobuf.StringValue destination_field = 1 [(com.coralogix.openapi.v1.field) = {
     required: true,

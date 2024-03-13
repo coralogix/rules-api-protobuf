@@ -8,9 +8,6 @@ import "com/coralogix/openapi/v1/annotations.proto";
 
 // A subgroup inside the rule group. Will try to run all the rules inside of it one after the other. If one rule didn't match, the whole rule subgroup won't match
 message RuleSubgroup {
-  option (com.coralogix.openapi.v1.message) = {
-    resource: true
-  };
   google.protobuf.StringValue id = 1 [(com.coralogix.openapi.v1.field) = {
     required: true,
     format : "uuid",

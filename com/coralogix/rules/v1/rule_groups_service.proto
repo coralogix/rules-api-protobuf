@@ -48,9 +48,10 @@ service RuleGroupsService {
       get: "/api/v1/rulegroups"
     };
     option (com.coralogix.openapi.v1.method) = {
-      http_rule_index: 1
-      resource: true
+      datasource: true
       description: "Gets all rule groups"
+      response_body_example: "{\"rule_groups\":[{\"id\":\"a2ddf5dd-f77f-4bea-b782-4068c510e15d\",\"name\":\"mysql-extractrule\",\"description\":\"mysql-cloudwatch audit logs  parser\",\"creator\":\"bot@coralogix.com\",\"enabled\":true,\"hidden\":false,\"rule_matchers\":[{\"subsystem_name\":{\"value\":\"mysql-cloudwatch\"}}],\"rule_subgroups\":[{\"id\":\"2df585fe-be27-4062-aa42-e740193bfc75\",\"rules\":[{\"id\":\"bd585f17-278a-4908-b05b-54fd6bf693be\",\"name\":\"mysql-parse\",\"description\":\"mysql-parse\",\"source_field\":\"text\",\"parameters\":{\"parse_parameters\":{\"destination_field\":\"text\",\"rule\":\"(?P<timestamp>[^,]+),(?P<hostname>[^,]+),(?P<username>[^,]+),(?P<ip>[^,]+),(?P<connectionId>[0-9]+),(?P<queryId>[0-9]+),(?P<operation>[^,]+),(?P<database>[^,]+),'?(?P<object>.*)'?,(?P<returnCode>[0-9]+)\"}},\"enabled\":true,\"order\":1}],\"enabled\":true,\"order\":1}],\"order\":5}]}"
+
     };
   }
   rpc CreateRuleGroup(CreateRuleGroupRequest) returns (CreateRuleGroupResponse) {
@@ -121,11 +122,6 @@ service RuleGroupsService {
       delete: "/api/v1/rulegroups"
       body: "group_ids"
     };
-    option (com.coralogix.openapi.v1.method) = {
-      http_rule_index: 1
-      resource: true
-      description: "Deletes multiple rule groups at once"
-    };
   }
 
   rpc GetRuleGroupModelMapping(GetRuleGroupModelMappingRequest) returns (GetRuleGroupModelMappingResponse){
@@ -133,11 +129,6 @@ service RuleGroupsService {
     option (google.api.http) = {
       post: "/api/v1/rulegroup-mapping"
       body: "*"
-    };
-    option (com.coralogix.openapi.v1.method) = {
-      http_rule_index: 1
-      resource: true
-      description: "Convenient method to format request in json-like format"
     };
   }
 
@@ -147,19 +138,11 @@ service RuleGroupsService {
       post: "/api/v1/rulegroups/company-limits"
       body: "*"
     };
-    option (com.coralogix.openapi.v1.method) = {
-      http_rule_index: 1
-      resource: true
-      description: "Get company usage with limits"
-    };
   }
 }
 
 // Request model for GetRuleGroup rpc
 message GetRuleGroupRequest {
-  option (com.coralogix.openapi.v1.message) = {
-    resource: true
-  };
   string group_id = 1 [(com.coralogix.openapi.v1.field) = {
     required: true,
     format : "uuid",
@@ -185,7 +168,7 @@ message ListRuleGroupsRequest {
 // Response model for ListRuleGroups rpc
 message ListRuleGroupsResponse {
   option (com.coralogix.openapi.v1.message) = {
-    resource: true
+    name: "RuleGroupCollection"
   };
   repeated RuleGroup rule_groups = 1;
 }
@@ -193,7 +176,7 @@ message ListRuleGroupsResponse {
 // Request model for CreateRuleGroup rpc
 message CreateRuleGroupRequest {
   option (com.coralogix.openapi.v1.message) = {
-    resource: true
+    name: "RuleGroupPrototype"
   };
 
   google.protobuf.StringValue name = 1 [(com.coralogix.openapi.v1.field) = {
@@ -228,14 +211,8 @@ message CreateRuleGroupRequest {
 
   // A subgroup inside the rule group. Will try to run all the rules inside of it one after the other. If one rule didn't match, the whole rule subgroup won't match
   message CreateRuleSubgroup {
-    option (com.coralogix.openapi.v1.message) = {
-      resource: true
-    };
     // A rule to execute on the log, like time extract, regex extract, field dropping etc.
     message CreateRule {
-      option (com.coralogix.openapi.v1.message) = {
-        resource: true
-      };
       // Optional rule name
       google.protobuf.StringValue name = 1 [(com.coralogix.openapi.v1.field) = {
         required: false,
@@ -303,18 +280,12 @@ message CreateRuleGroupRequest {
 
 // Response model for CreateRuleGroup rpc
 message CreateRuleGroupResponse {
-  option (com.coralogix.openapi.v1.message) = {
-    resource: true
-  };
   // Created rule group
   RuleGroup rule_group = 1;
 }
 
 // Request model for UpdateRuleGroup rpc
 message UpdateRuleGroupRequest {
-  option (com.coralogix.openapi.v1.message) = {
-    resource: true
-  };
   google.protobuf.StringValue group_id = 1 [(com.coralogix.openapi.v1.field) = {
     required: true,
     format : "uuid",
@@ -332,18 +303,12 @@ message UpdateRuleGroupRequest {
 
 // Response model for UpdateRuleGroup rpc
 message UpdateRuleGroupResponse {
-  option (com.coralogix.openapi.v1.message) = {
-    resource: true
-  };
   // The updated rule group
   RuleGroup rule_group = 1;
 }
 
 // Request model for DeleteRuleGroup rpc
 message DeleteRuleGroupRequest {
-  option (com.coralogix.openapi.v1.message) = {
-    resource: true
-  };
   // The group id to delete
   string group_id = 1 [(com.coralogix.openapi.v1.field) = {
     required: true,
@@ -357,16 +322,10 @@ message DeleteRuleGroupRequest {
 
 // Response model for DeleteRuleGroup rpc
 message DeleteRuleGroupResponse {
-  option (com.coralogix.openapi.v1.message) = {
-    resource: true
-  };
 }
 
 // Request model for BulkDeleteRuleGroup rpc
 message BulkDeleteRuleGroupRequest {
-  option (com.coralogix.openapi.v1.message) = {
-    resource: true
-  };
   // The group ids to delete
   repeated string group_ids = 1 [(com.coralogix.openapi.v1.field) = {
     required: true,
@@ -388,9 +347,6 @@ message BulkDeleteRuleGroupResponse {
 
 // Request model for GetRuleGroupModelMapping rpc
 message GetRuleGroupModelMappingRequest {
-  option (com.coralogix.openapi.v1.message) = {
-    resource: true
-  };
   google.protobuf.StringValue name = 1 [(com.coralogix.openapi.v1.field) = {
     required: true,
     min_length : 1,
@@ -421,13 +377,7 @@ message GetRuleGroupModelMappingRequest {
 
   // A subgroup inside the rule group. Will try to run all the rules inside of it one after the other. If one rule didn't match, the whole rule subgroup won't match
   message CreateRuleSubgroup {
-    option (com.coralogix.openapi.v1.message) = {
-      resource: true
-    };
     message CreateRule {
-      option (com.coralogix.openapi.v1.message) = {
-        resource: true
-      };
       google.protobuf.StringValue name = 1 [(com.coralogix.openapi.v1.field) = {
         required: false,
         example: "\"Extract Timestamp\""
@@ -487,29 +437,17 @@ message GetRuleGroupModelMappingRequest {
 
 // Response model for GetRuleGroupModelMapping rpc
 message GetRuleGroupModelMappingResponse {
-  option (com.coralogix.openapi.v1.message) = {
-    resource: true
-  };
   // The create rule group request formatted as a json like object
   google.protobuf.Struct rule_definition = 1;
 }
 
 // Request model for GetCompanyUsageLimits rpc
 message GetCompanyUsageLimitsRequest {
-  option (com.coralogix.openapi.v1.message) = {
-    resource: true
-  };
 }
 
 // Response model for GetCompanyUsageLimits rpc
 message GetCompanyUsageLimitsResponse {
-  option (com.coralogix.openapi.v1.message) = {
-    resource: true
-  };
   message Counts {
-    option (com.coralogix.openapi.v1.message) = {
-      resource: true
-    };
     // Number of allowed rule groups
     google.protobuf.Int32Value parsing_themes = 1;
     // Number of allowed rule subgroups

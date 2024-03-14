@@ -7,6 +7,7 @@ import "com/coralogix/openapi/v1/annotations.proto";
 
 // Rule to execute on a log
 message Rule {
+  // Unique identifier of the rule
   google.protobuf.StringValue id = 1 [(com.coralogix.openapi.v1.field) = {
     required: true,
     format : "uuid",
@@ -15,9 +16,11 @@ message Rule {
     pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
     example: "\"3dc02998-0b50-4ea8-b68a-4779d716fa1f\"",
   }];
+  // Name of the rule
   google.protobuf.StringValue name = 2 [(com.coralogix.openapi.v1.field) = {
     required: true
   }];
+  // Description of the rule
   google.protobuf.StringValue description = 3 [(com.coralogix.openapi.v1.field) = {
     required: false
   }];

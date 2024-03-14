@@ -42,6 +42,7 @@ message SubsystemNameConstraint {
 
 // Severity constraint
 message SeverityConstraint {
+  // Severity value
   enum Value {
     VALUE_DEBUG_OR_UNSPECIFIED = 0;
     VALUE_VERBOSE = 1;

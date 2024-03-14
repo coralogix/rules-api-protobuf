@@ -12,6 +12,7 @@ message RuleGroup {
   option (com.coralogix.openapi.v1.message) = {
     resource: true
   };
+  // The id of the rule group
   google.protobuf.StringValue id = 1 [(com.coralogix.openapi.v1.field) = {
     required: true,
     format : "uuid",
@@ -20,6 +21,7 @@ message RuleGroup {
     pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
     example: "\"3dc02998-0b50-4ea8-b68a-4779d716fa1f\"",
   }];
+  // The name of the rule group
   google.protobuf.StringValue name = 2 [(com.coralogix.openapi.v1.field) = {
     required: true,
     min_length : 1,
@@ -61,6 +63,8 @@ message RuleGroup {
   }];
 }
 
+// The id of the team
 message TeamId {
+  // The id of the team
   uint32 id = 1;
 }

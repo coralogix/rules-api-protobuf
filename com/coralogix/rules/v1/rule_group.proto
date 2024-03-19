@@ -5,23 +5,66 @@ package com.coralogix.rules.v1;
 import "google/protobuf/wrappers.proto";
 import "com/coralogix/rules/v1/rule_matcher.proto";
 import "com/coralogix/rules/v1/rule_subgroup.proto";
+import "com/coralogix/openapi/v1/annotations.proto";
 
+// Parsing rule group
 message RuleGroup {
-  google.protobuf.StringValue id = 1;
-  google.protobuf.StringValue name = 2;
-  google.protobuf.StringValue description = 3;
+  option (com.coralogix.openapi.v1.message) = {
+    resource: true
+  };
+  // The id of the rule group
+  google.protobuf.StringValue id = 1 [(com.coralogix.openapi.v1.field) = {
+    required: true,
+    format : "uuid",
+    min_length : 36,
+    max_length : 36,
+    pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+    example: "\"3dc02998-0b50-4ea8-b68a-4779d716fa1f\"",
+  }];
+  // The name of the rule group
+  google.protobuf.StringValue name = 2 [(com.coralogix.openapi.v1.field) = {
+    required: true,
+    min_length : 1,
+    max_length : 255,
+    example: "\"rule group\"",
+  }];
+  // A description for the rule group, should express what is the rule group purpose
+  google.protobuf.StringValue description = 3 [(com.coralogix.openapi.v1.field) = {
+    required: false,
+    example: "\"Rule group to extract severity from logs\"",
+  }];
 
-  google.protobuf.StringValue creator = 6;
+  // The creator of the rule group
+  google.protobuf.StringValue creator = 6 [(com.coralogix.openapi.v1.field) = {
+    required: false,
+    example: "\"terraform-rules-creator\""
+  }];
 
-  google.protobuf.BoolValue enabled = 7;
-  google.protobuf.BoolValue hidden = 8;
-
-  repeated RuleMatcher rule_matchers = 9;
-  repeated RuleSubgroup rule_subgroups = 10;
-
-  google.protobuf.UInt32Value order = 11;
+  // Whether or not the rule is enabled
+  google.protobuf.BoolValue enabled = 7 [(com.coralogix.openapi.v1.field) = {
+    required: false
+  }];
+  // Not used
+  google.protobuf.BoolValue hidden = 8 [(openapi.v1.field) = {
+    skip_in: [CLOUD_IBM]
+  }];
+  // // Optional rule matchers which if matched will make the rule go through the rule group
+  repeated RuleMatcher rule_matchers = 9 [(com.coralogix.openapi.v1.field) = {
+    required: false
+  }];;
+  // Rule subgroups. Will try to execute the first rule subgroup, and if not matched will try to match the next one in order
+  repeated RuleSubgroup rule_subgroups = 10 [(com.coralogix.openapi.v1.field) = {
+    required: true,
+    min_items: 1
+  }];
+  // // The order in which the rule group will be evaluated. The lower the order, the more priority the group will have. Not providing the order will by default create a group with the last order
+  google.protobuf.UInt32Value order = 11 [(com.coralogix.openapi.v1.field) = {
+    required: false,
+  }];
 }
 
+// The id of the team
 message TeamId {
+  // The id of the team
   uint32 id = 1;
 }

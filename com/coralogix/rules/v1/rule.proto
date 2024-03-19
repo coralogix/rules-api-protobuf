@@ -3,46 +3,112 @@ syntax = "proto3";
 package com.coralogix.rules.v1;
 
 import "google/protobuf/wrappers.proto";
+import "com/coralogix/openapi/v1/annotations.proto";
 
+// Rule to execute on a log
 message Rule {
-  google.protobuf.StringValue id = 1;
-  google.protobuf.StringValue name = 2;
-  google.protobuf.StringValue description = 3;
+  // Unique identifier of the rule
+  google.protobuf.StringValue id = 1 [(com.coralogix.openapi.v1.field) = {
+    required: true,
+    format : "uuid",
+    min_length : 36,
+    max_length : 36,
+    pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+    example: "\"3dc02998-0b50-4ea8-b68a-4779d716fa1f\"",
+  }];
+  // Name of the rule
+  google.protobuf.StringValue name = 2 [(com.coralogix.openapi.v1.field) = {
+    required: true
+  }];
+  // Description of the rule
+  google.protobuf.StringValue description = 3 [(com.coralogix.openapi.v1.field) = {
+    required: false
+  }];
 
   reserved "rule";
   reserved 4;
 
-  google.protobuf.StringValue source_field = 5;
+  // A field on which value to execute the rule
+  google.protobuf.StringValue source_field = 5 [(com.coralogix.openapi.v1.field) = {
+    required: true,
+    example: "\"logObj.source\""
+  }];
 
-  RuleParameters parameters = 6;
+  // Parameters for a rule which specifies how it should run
+  RuleParameters parameters = 6 [(com.coralogix.openapi.v1.field) = {
+    required: true
+  }];
 
-  google.protobuf.BoolValue enabled = 7;
-  google.protobuf.UInt32Value order = 8;
+  // Whether or not to execute the rule
+  google.protobuf.BoolValue enabled = 7 [(com.coralogix.openapi.v1.field) = {
+    required: true
+  }];
+  // The ordering of the rule subgroup. Lower order will run first. 0 is considered as no value
+  google.protobuf.UInt32Value order = 8 [(com.coralogix.openapi.v1.field) = {
+    required: true
+  }];
 }
 
+// Parameters for a rule which specifies how it should run
 message RuleParameters {
   oneof rule_parameters {
-    ExtractParameters extract_parameters = 1;
-    JsonExtractParameters json_extract_parameters = 2;
-    ReplaceParameters replace_parameters = 3;
-    ParseParameters parse_parameters = 4;
-    AllowParameters allow_parameters = 5;
-    BlockParameters block_parameters = 6;
-    ExtractTimestampParameters extract_timestamp_parameters = 7;
-    RemoveFieldsParameters remove_fields_parameters = 8;
-    JsonStringifyParameters json_stringify_parameters = 9;
-    JsonParseParameters json_parse_parameters = 10;
+    // Parameters for text extraction rule
+    ExtractParameters extract_parameters = 1 [(com.coralogix.openapi.v1.field) = {
+      required: true
+    }];
+    // Parameters for json extract rule
+    JsonExtractParameters json_extract_parameters = 2 [(com.coralogix.openapi.v1.field) = {
+      required: true
+    }];
+    // Parameters for replace rule
+    ReplaceParameters replace_parameters = 3 [(com.coralogix.openapi.v1.field) = {
+      required: true
+    }];
+    // Parameters for parse rule
+    ParseParameters parse_parameters = 4 [(com.coralogix.openapi.v1.field) = {
+      required: true
+    }];
+    // Parameters for allow rule
+    AllowParameters allow_parameters = 5 [(com.coralogix.openapi.v1.field) = {
+      required: true
+    }];
+    // Parameters for block rule
+    BlockParameters block_parameters = 6 [(com.coralogix.openapi.v1.field) = {
+      required: true
+    }];
+    // Parameters for extract timestamp rule
+    ExtractTimestampParameters extract_timestamp_parameters = 7 [(com.coralogix.openapi.v1.field) = {
+      required: true
+    }];
+    // Parameters for remove fields rule
+    RemoveFieldsParameters remove_fields_parameters = 8 [(com.coralogix.openapi.v1.field) = {
+      required: true
+    }];
+    // Parameters for json stringify rule
+    JsonStringifyParameters json_stringify_parameters = 9 [(com.coralogix.openapi.v1.field) = {
+      required: true
+    }];
+    // Parameters for json parse rule
+    JsonParseParameters json_parse_parameters = 10 [(com.coralogix.openapi.v1.field) = {
+      required: true
+    }];
   }
 }
 
+// Extract rule parameters
 message ExtractParameters {
   reserved 1;
   reserved "destinationField";
-
-  google.protobuf.StringValue rule = 2;
+  // Regex which will parse the source field and extract the json keys from it while retaining the original log
+  google.protobuf.StringValue rule = 2 [(com.coralogix.openapi.v1.field) = {
+    required: true,
+    example: "\"^http:\\/\\/status\\.aws\\.amazon\\.com\\/#(?P<service>\\w+)\\-(?P<region>[^_]+)_\""
+  }];
 }
 
+// Json extract rule parameters
 message JsonExtractParameters {
+  // Enum which specify different types of metadata fields
   enum DestinationField {
     DESTINATION_FIELD_CATEGORY_OR_UNSPECIFIED = 0;
     DESTINATION_FIELD_CLASSNAME = 1;
@@ -51,32 +117,79 @@ message JsonExtractParameters {
     DESTINATION_FIELD_SEVERITY = 4;
   }
 
-  DestinationField destination_field = 1;
-  google.protobuf.StringValue rule = 2;
+  // In which metadata field to store the extracted value
+  DestinationField destination_field = 1 [(com.coralogix.openapi.v1.field) = {
+    required: false
+  }];
+  // Not used
+  google.protobuf.StringValue rule = 2 [(com.coralogix.openapi.v1.field) = {
+    required: false,
+    skip_in: [CLOUD_IBM]
+  }, deprecated = true];
 }
 
+// Replace rule parameters
 message ReplaceParameters {
-  google.protobuf.StringValue destination_field = 1;
-  google.protobuf.StringValue replace_new_val = 2;
-  google.protobuf.StringValue rule = 3;
+  // In which field to put the modified text
+  google.protobuf.StringValue destination_field = 1 [(com.coralogix.openapi.v1.field) = {
+    required: true,
+    example: "\"text.message\""
+  }];
+  // The value to replace the matched text with
+  google.protobuf.StringValue replace_new_val = 2 [(com.coralogix.openapi.v1.field) = {
+    required: true,
+    example: "\"***\""
+  }];
+  // Regex which will match parts in the text to replace
+  google.protobuf.StringValue rule = 3 [(com.coralogix.openapi.v1.field) = {
+    required: true,
+    example: "\"the password is (?P<password>[A-Za-z0-9!@#$].)\""
+  }];
 }
 
+// Parse rule parameters
 message ParseParameters {
-  google.protobuf.StringValue destination_field = 1;
-  google.protobuf.StringValue rule = 2;
+  // In which field to put the parsed text
+  google.protobuf.StringValue destination_field = 1 [(com.coralogix.openapi.v1.field) = {
+    required: true,
+    example: "\"text.message\""
+  }];
+  // Regex which will parse the source field and extract the json keys from it while removing the source field
+  google.protobuf.StringValue rule = 2 [(com.coralogix.openapi.v1.field) = {
+    required: true,
+    example: "\"^http:\\/\\/status\\.aws\\.amazon\\.com\\/#(?P<service>\\w+)\\-(?P<region>[^_]+)_\""
+  }];
 }
 
+// Allow rule parameters
 message AllowParameters {
-  google.protobuf.BoolValue keep_blocked_logs = 1;
-  google.protobuf.StringValue rule = 2;
+  // If true matched logs will be blocked, otherwise matched logs will be kept
+  google.protobuf.BoolValue keep_blocked_logs = 1 [(com.coralogix.openapi.v1.field) = {
+    required: true
+  }];
+  // Regex which will match the source field and decide if the rule will apply
+  google.protobuf.StringValue rule = 2 [(com.coralogix.openapi.v1.field) = {
+    required: true,
+    example: "\"^this log should be kept!!!.*$\""
+  }];
 }
 
+// Block rule parameters
 message BlockParameters {
-  google.protobuf.BoolValue keep_blocked_logs = 1;
-  google.protobuf.StringValue rule = 2;
+  // If true matched logs will be kept, otherwise matched logs will be blocked
+  google.protobuf.BoolValue keep_blocked_logs = 1 [(com.coralogix.openapi.v1.field) = {
+    required: true,
+  }];
+  // Regex which will match the source field and decide if the rule will apply
+  google.protobuf.StringValue rule = 2 [(com.coralogix.openapi.v1.field) = {
+    required: true,
+    example: "\"^this log should be blocked!!!.*$\""
+  }];
 }
 
+// Extract timestamp rule parameters
 message ExtractTimestampParameters {
+  // Time format to use when extracting the time
   enum FormatStandard {
     FORMAT_STANDARD_STRFTIME_OR_UNSPECIFIED = 0;
     FORMAT_STANDARD_JAVASDF = 1;
@@ -87,22 +200,58 @@ message ExtractTimestampParameters {
     FORMAT_STANDARD_NANOTS = 6;
   }
 
-  FormatStandard standard = 1;
-  google.protobuf.StringValue format = 2;
+  // What time format to use on the extracted time
+  FormatStandard standard = 1 [(com.coralogix.openapi.v1.field) = {
+    required: true,
+  }];
+  // What time format the the source field to extract from has
+  google.protobuf.StringValue format = 2 [(com.coralogix.openapi.v1.field) = {
+    required: true,
+    example: "\"%Y-%m-%ddT%H:%M:%S.%f%z\""
+  }];
 }
 
+// Remove fields rule parameters
 message RemoveFieldsParameters {
-  repeated string fields = 1;
+  // Json field paths to drop from the log
+  repeated string fields = 1 [(com.coralogix.openapi.v1.field) = {
+    required: true,
+    min_items: 1
+  }];
 }
 
+// Json stringify rule parameters
 message JsonStringifyParameters {
-  google.protobuf.StringValue destination_field = 1;
-  google.protobuf.BoolValue delete_source = 2;
+  // Destination field in which to put the json stringified content
+  google.protobuf.StringValue destination_field = 1 [(com.coralogix.openapi.v1.field) = {
+    required: true,
+    example: "\"json.stringified\""
+  }];
+  // Whether or not to delete the source field after running this rule
+  google.protobuf.BoolValue delete_source = 2 [(com.coralogix.openapi.v1.field) = {
+    required: false
+  }];
 }
 
+// Json parse rule parameters
 message JsonParseParameters {
-  google.protobuf.StringValue destination_field = 1;
-  google.protobuf.BoolValue delete_source = 2;
-  google.protobuf.BoolValue escaped_value = 3;
-  google.protobuf.BoolValue override_dest = 4;
+  // Destination field under which to put the json object
+  google.protobuf.StringValue destination_field = 1 [(com.coralogix.openapi.v1.field) = {
+    required: true,
+    example: "\"json.content\""
+  }];
+  // Whether or not to delete the source field after running this rule
+  google.protobuf.BoolValue delete_source = 2 [(com.coralogix.openapi.v1.field) = {
+    required: false
+  }];
+  // Not used
+  google.protobuf.BoolValue escaped_value = 3 [(com.coralogix.openapi.v1.field) = {
+    required: false,
+    skip_in: [CLOUD_IBM]
+  }, deprecated = true];
+  // Destination field in which to put the json stringified content
+  google.protobuf.BoolValue override_dest = 4 [(com.coralogix.openapi.v1.field) = {
+    required: true,
+    example: "json.stringified"
+  }];
 }

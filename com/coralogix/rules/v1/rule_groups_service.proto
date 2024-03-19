@@ -46,8 +46,13 @@ service RuleGroupsService {
     option (audit_log_description).description = "get all rule groups";
     option (google.api.http) = {
       get: "/api/v1/rulegroups"
+
+      additional_bindings: {
+        get: "/v1/rulegroups"
+      }
     };
     option (com.coralogix.openapi.v1.method) = {
+      http_rule_index: 1
       datasource: true
       description: "Gets all rule groups"
       response_body_example: "{\"rulegroups\":[{\"id\":\"a2ddf5dd-f77f-4bea-b782-4068c510e15d\",\"name\":\"mysql-extractrule\",\"description\":\"mysql-cloudwatch audit logs  parser\",\"creator\":\"bot@coralogix.com\",\"enabled\":true,\"hidden\":false,\"rule_matchers\":[{\"subsystem_name\":{\"value\":\"mysql-cloudwatch\"}}],\"rule_subgroups\":[{\"id\":\"2df585fe-be27-4062-aa42-e740193bfc75\",\"rules\":[{\"id\":\"bd585f17-278a-4908-b05b-54fd6bf693be\",\"name\":\"mysql-parse\",\"description\":\"mysql-parse\",\"source_field\":\"text\",\"parameters\":{\"parse_parameters\":{\"destination_field\":\"text\",\"rule\":\"(?P<timestamp>[^,]+),(?P<hostname>[^,]+),(?P<username>[^,]+),(?P<ip>[^,]+),(?P<connectionId>[0-9]+),(?P<queryId>[0-9]+),(?P<operation>[^,]+),(?P<database>[^,]+),'?(?P<object>.*)'?,(?P<returnCode>[0-9]+)\"}},\"enabled\":true,\"order\":1}],\"enabled\":true,\"order\":1}],\"order\":5}]}"
